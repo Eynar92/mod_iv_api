@@ -14,8 +14,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
 
     testImplementation 'io.cucumber:cucumber-java:8.0.4'
+    testImplementation 'io.cucumber:cucumber-picocontainer:8.0.4'
     testImplementation platform('org.junit:junit-bom:6.1.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.19.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -28,3 +30,20 @@ java {
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }
+
+tasks.register('cucumberCli', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'io.cucumber.core.cli.Main'
+    doFirst {
+        if (fileTree('src/test/resources/features').matching { include '**/*.feature' }.isEmpty()) {
+            throw new GradleException('No Cucumber feature files were found.')
+        }
+    }
+    args '--glue', 'com.todoapi',
+            '--plugin', 'pretty',
+            '--plugin', 'html:build/reports/cucumber/report.html',
+            'src/test/resources/features'
+}
+
+check.dependsOn cucumberCli
