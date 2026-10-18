@@ -4,7 +4,7 @@ This project will automate Todo.ly with Java, Gradle, Cucumber, and REST Assured
 
 ## Current status
 
-This branch adds a classpath configuration file, a small `ConfigReader`, and a generic JSON HTTP client with unauthenticated POST, BasicAuth GET, and token-authenticated GET/POST/PUT/DELETE methods. Todo.ly endpoint paths and business operations, the Cucumber feature, and the live API scenario have not been added yet.
+This branch adds `UserService` for user creation and token retrieval, and `ProjectService` for project creation, retrieval, update, and deletion. It builds on the core configuration and HTTP client. See the [Todo.ly API documentation](https://todo.ly/ApiWiki/). The Cucumber scenario is not implemented or live-verified yet. The planned flow creates a user, retrieves a token with the generated credentials using BasicAuth, then creates, updates, and deletes a project with the token.
 
 ## Requirements and commands
 
@@ -49,8 +49,8 @@ Branches are stacked: each stage starts from its predecessor, and each implement
 
 1. `main` — minimal README and `.gitignore` baseline
 2. `jalvarez/project_setup` — Java 21 build, dependencies, and Gradle Wrapper
-3. `jalvarez/core_layer` — shared API configuration and generic HTTP support (current branch)
-4. `jalvarez/business_layer` — Todo.ly user creation, token retrieval, and project operations
+3. `jalvarez/core_layer` — shared API configuration and generic HTTP support
+4. `jalvarez/business_layer` — Todo.ly user creation, token retrieval, and project operations (current branch)
 5. `jalvarez/test_layer` — Cucumber feature, step definitions, assertions, and cleanup hooks
 
 All work is kept in local branches; no remote is configured.
