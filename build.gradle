@@ -35,15 +35,20 @@ tasks.register('cucumberCli', JavaExec) {
     dependsOn testClasses
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'io.cucumber.core.cli.Main'
+    def tagExpression = providers.gradleProperty('tags')
     doFirst {
         if (fileTree('src/test/resources/features').matching { include '**/*.feature' }.isEmpty()) {
             throw new GradleException('No Cucumber feature files were found.')
         }
     }
-    args '--glue', 'com.todoapi',
+    args '--glue', 'com.todoapi.steps',
+            '--glue', 'com.todoapi.hooks',
             '--plugin', 'pretty',
             '--plugin', 'html:build/reports/cucumber/report.html',
             'src/test/resources/features'
+    if (tagExpression.isPresent()) {
+        args '--tags', tagExpression.get()
+    }
 }
 
 check.dependsOn cucumberCli
