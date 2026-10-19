@@ -1,5 +1,6 @@
 Feature: Todo.ly project lifecycle
 
+  @api @project_lifecycle
   Scenario: Create, update, and delete a project successfully
     Given a new Todo.ly user is registered
     And the user obtains an authentication token
